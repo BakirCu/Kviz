@@ -1,3 +1,5 @@
 from django.shortcuts import render
 
-# Create your views here.
+
+def create_kviz(request):
+    return render(request, 'kvizer/create_kviz.html')
