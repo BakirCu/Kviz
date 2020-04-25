@@ -1,32 +1,34 @@
-{% extends "kvizer/base.html" %}
-{% block content %}
+{% extends "kvizer/base_kviz.html" %}
+{% block content_kviz %}
 {% load static %}
 
 
 <div class="container mt-5 mb-5">
-    <div class="row justify-content-center">
 
-        <form action="#">
-            <div class="form-group row">
-                <label for="naziv-kviza" class="col-sm-2 col-form-label col-form-label-lg">Naziv:</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control form-control-lg" id="naziv-kviza" name="naziv">
-                </div>
+    <form action="#" method="POST">
+        {% csrf_token %}
+        <div class="form-group row">
+            <label for="naziv-kviza" class="col-sm-2 col-form-label">Naziv:</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control  form-control-lg" id="naziv-kviza" name="naziv" required=''
+                    oninvalid="this.setCustomValidity('Unesite naziv kviza')" oninput="setCustomValidity('')">
+            </div>
+        </div>
 
+        <div class=" form-group row">
+            <label for="trajanje" class="col-sm-2 col-form-label">Duzina trajanja kviza:
+            </label>
+            <div class="col-sm-10">
+                <input type="number" min="0" class="form-control  form-control-lg  " id="trajanje" name="trajanje-kviza"
+                    placeholder="Koliko minuta zelite da traje kviz" required>
             </div>
-            <div class="form-group row">
-                <label for="trajanje" class="col-sm-2 col-form-label col-form-label-sm">Duzina trajanja kviza
-                </label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control form-control-lg" id="trajanje" name="trajanje-kviza"
-                        placeholder="Koliko minuta zelite da traje kviz">
-                </div>
-            </div>
-            <div class="col text-center">
-                <button type="submit" class="btn btn-primary">Kreiraj kviz i dodaj pitanja</button>
-            </div>
-        </form>
-    </div>
+        </div>
+
+        <div class="col text-center">
+            <button type="submit" class="btn btn-primary mt-5 mb-5">Kreiraj kviz i dodaj pitanja</button>
+        </div>
+    </form>
+
 </div>
 
 
