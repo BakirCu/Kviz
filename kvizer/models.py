@@ -40,8 +40,7 @@ class Kviz(models.Model):
     predmet = models.CharField(choices=PREDMETI, max_length=40)
     godina = models.CharField(choices=GODINE, max_length=40)
     id_korisnika = models.PositiveIntegerField()
-    trajanje_kviza = models.PositiveIntegerField(
-        help_text='Trajanje kviza je u minutama')
+    trajanje_kviza = models.PositiveIntegerField()
 
     def __str__(self):
         return f'{self.naziv}'
