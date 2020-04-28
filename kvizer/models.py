@@ -48,7 +48,7 @@ class Kviz(models.Model):
 
 class Pitanje(models.Model):
     id_kviza = models.ForeignKey(Kviz, on_delete=models.CASCADE)
-    text = models.TextField(max_length=300)
+    pitanje = models.TextField(max_length=300)
 
     def __str__(self):
         return f'{self.id_kviza}'

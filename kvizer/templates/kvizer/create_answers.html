@@ -1,6 +1,25 @@
 {% extends "kvizer/base_kviz.html" %}
 {% block content_kviz %}
 {% load static %}
+
+
+<form class="form-group" method="POST">
+    {% csrf_token %}
+    <div class="content-section">
+        {{ form.as_p }}
+    </div>
+
+    <div class="col text-center">
+
+        <div class="btn-group btn-group-lg mt-5">
+            <button type="submit" class="btn btn-success mt-5 mb-5">Dodaj sledeće pitanje</button>
+
+            <a class="btn btn-success" href="#" role="button">Završi kreiranje kviza</a>
+        </div>
+    </div>
+</form>
+
+<!--
 <div class="container mt-5 mb-5">
     <h4 class="mt-5">Kviz:</h4>
     <h5 class="mb-5">Dužina trajanja:</h5>
@@ -57,5 +76,5 @@
 
 </div>
 
-
+-->
 {% endblock %}

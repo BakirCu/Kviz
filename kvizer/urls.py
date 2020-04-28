@@ -4,5 +4,6 @@ from . import views
 
 urlpatterns = [
     path('', views.create_kviz, name='create_kviz'),
-    path('answers/', views.create_answers, name='create_answers'),
+    path('answers/<str:id_kviza>/', views.create_answers, name='create_answers'),
+
 ]
