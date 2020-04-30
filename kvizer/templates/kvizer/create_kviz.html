@@ -1,16 +1,16 @@
 {% extends "kvizer/base_kviz.html" %}
 {% block content_kviz %}
 {% load static %}
-
-<form class="form-group" method="post">
-    {% csrf_token %}
-    <div class="content-section">
-        {{ form.as_p }}
-    </div>
-    <div class="col text-center">
-        <button type="submit" class="btn btn-success mt-5 mb-5">Kreiraj kviz i dodaj pitanja</button>
-    </div>
-</form>
-
+<div class="d-flex justify-content-center mt-5">
+    <form class="form-group" method="post">
+        {% csrf_token %}
+        <div class="content-section">
+            {{ form.as_p }}
+        </div>
+        <div class="col text-center">
+            <button type="submit" class="btn btn-success mt-5 mb-5">Kreiraj kviz i dodaj pitanja</button>
+        </div>
+    </form>
+</div>
 
 {% endblock %}

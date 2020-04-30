@@ -56,6 +56,7 @@ class Pitanje(models.Model):
 
 class Odgovor(models.Model):
     id_pitanja = models.ForeignKey(Pitanje, on_delete=models.CASCADE)
+    odgovor = models.TextField(max_length=300)
     tacnost = models.BooleanField()
 
     def __str__(self):

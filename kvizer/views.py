@@ -1,7 +1,10 @@
 from django.shortcuts import render, redirect
 from .forms import KvizForm, PitanjeForm
 from .models import Pitanje, Odgovor, Kviz
-from django.db.models import Q
+
+
+def home_kviz(request):
+    return render(request, 'kvizer/home_kviz.html')
 
 
 def create_kviz(request):
@@ -21,13 +24,39 @@ def create_answers(request, id_kviza):
         form = PitanjeForm(request.POST)
         if form.is_valid():
             get_pitanje = form.cleaned_data["Pitanje"]
-            iff = Kviz.objects.get(pk=id_kviza)
-            pitanje = Pitanje(id_kviza=iff, pitanje=get_pitanje)
-            pitanje.save()
-            print(pitanje.id)
+            get_tacan_odgovor = form.cleaned_data["Tacan_odgovor"]
+            get_netacan_odgovor1 = form.cleaned_data["Netacan_odgovor1"]
+            get_netacan_odgovor2 = form.cleaned_data["Netacan_odgovor2"]
+            get_netacan_odgovor3 = form.cleaned_data["Netacan_odgovor3"]
 
+            id_from_kviz = Kviz.objects.get(pk=id_kviza)
+            pitanje = Pitanje(id_kviza=id_from_kviz, pitanje=get_pitanje)
+            pitanje.save()
+            id_from_pitanje = Pitanje.objects.get(pk=pitanje.pk)
+            Tacan_odgovor = Odgovor(id_pitanja=id_from_pitanje,
+                                    odgovor=get_tacan_odgovor,
+                                    tacnost=1)
+            Tacan_odgovor.save()
+            Netacan_odgovor1 = Odgovor(id_pitanja=id_from_pitanje,
+                                       odgovor=get_netacan_odgovor1,
+                                       tacnost=0)
+            Netacan_odgovor1.save()
+            if get_netacan_odgovor2:
+                Netacan_odgovor2 = Odgovor(id_pitanja=id_from_pitanje,
+                                           odgovor=get_netacan_odgovor2,
+                                           tacnost=0)
+                Netacan_odgovor2.save()
+            if get_netacan_odgovor3:
+                Netacan_odgovor3 = Odgovor(id_pitanja=id_from_pitanje,
+                                           odgovor=get_netacan_odgovor3,
+                                           tacnost=0)
+                Netacan_odgovor3.save()
             return redirect('create_answers', id_kviza=id_kviza)
     else:
         form = PitanjeForm()
 
     return render(request, 'kvizer/create_answers.html', {'form': form})
+
+
+def start_kviz(request):
+    return render(request, 'kvizer/start_kviz.html')

@@ -2,22 +2,23 @@
 {% block content_kviz %}
 {% load static %}
 
-
-<form class="form-group" method="POST">
-    {% csrf_token %}
-    <div class="content-section">
-        {{ form.as_p }}
-    </div>
-
-    <div class="col text-center">
-
-        <div class="btn-group btn-group-lg mt-5">
-            <button type="submit" class="btn btn-success mt-5 mb-5">Dodaj sledeće pitanje</button>
-
-            <a class="btn btn-success" href="#" role="button">Završi kreiranje kviza</a>
+<div class="d-flex justify-content-center mt-5">
+    <form class="form-group" method="POST">
+        {% csrf_token %}
+        <div class="content-section">
+            {{ form.as_p }}
         </div>
-    </div>
-</form>
+
+        <div class="col text-center">
+
+            <div class="btn-group btn-group-lg mt-5">
+                <button type="submit" class="btn btn-success mt-5 mb-5">Dodaj sledeće pitanje</button>
+                <a class="btn btn-success mt-5 mb-5" href="{% url 'home_kviz' %}" role="button">Završi kreiranje
+                    kviza</a>
+            </div>
+        </div>
+    </form>
+</div>
 
 <!--
 <div class="container mt-5 mb-5">
