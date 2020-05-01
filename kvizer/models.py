@@ -51,7 +51,7 @@ class Pitanje(models.Model):
     pitanje = models.TextField(max_length=300)
 
     def __str__(self):
-        return f'{self.id_kviza}'
+        return f'{self.pitanje}'
 
 
 class Odgovor(models.Model):
@@ -60,4 +60,4 @@ class Odgovor(models.Model):
     tacnost = models.BooleanField()
 
     def __str__(self):
-        return f'{self.id_pitanja}'
+        return f'{self.odgovor}'

@@ -3,22 +3,34 @@
 {% load static %}
 <h4>Kviz:</h4>
 <h4>Preostalo vreme:</h4>
-<table class="table table-borderless">
-    <thead>
-        <tr>
-            <th class="text-center">1.Pitanje</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td><input type="checkbox">Odgovor</td>
-            <td>Doe</td>
-        </tr>
-        <tr>
-            <td>Mary</td>
-            <td>Moe</td>
-        </tr>
-    </tbody>
-</table>
-</div>
+
+<form class="form-group" method="POST">
+    {% csrf_token %}
+
+    {% for pitanje, odgovori in pitanja_odgovori.items %}
+    <table class="table table-borderless">
+        <thead>
+            <tr>
+                <th colspan="2">{{pitanje}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for odgovor in odgovori %}
+            <tr>
+                <td>
+                    <div class="custom-control custom-radio">
+                        <input type="radio" class="custom-control-input" id="{{odgovor.id}}" name="{{pitanje.id}}"
+                            value="{{odgovor.id}}">
+                        <label class="custom-control-label" for="{{odgovor.id}}">{{ odgovor }}</label>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endfor %}
+    <div class="col text-center">
+        <button type="submit" class="btn btn-success mt-5 mb-5">Zavrsi kviz</button>
+    </div>
+</form>
 {% endblock %}

@@ -59,4 +59,19 @@ def create_answers(request, id_kviza):
 
 
 def start_kviz(request):
-    return render(request, 'kvizer/start_kviz.html')
+    id_kviza = 44
+    pitanja = Pitanje.objects.filter(id_kviza_id=id_kviza)
+    pitanja_odgovori = {}
+    for pitanje in pitanja:
+        odgovori = Odgovor.objects.filter(id_pitanja_id=pitanje.id)
+        pitanja_odgovori[pitanje] = odgovori
+    if request.method == "POST":
+        odgovor1 = request.POST.get('24')
+
+        print(odgovor1)
+        return redirect('end_kviz')
+    return render(request, 'kvizer/start_kviz.html', {'pitanja_odgovori': pitanja_odgovori})
+
+
+def end_kviz(request):
+    return render(request, 'kvizer/end_kviz.html')
