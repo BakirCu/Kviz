@@ -16,18 +16,31 @@
 </head>
 
 <body>
+    <style>
+        .dropdown:hover>.dropdown-menu {
+            display: block;
+        }
+    </style>
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+        <!-- Brand -->
+        <a class="navbar-brand" href="#">Logo</a>
 
-    <!-- Navigation bar-->
-    <nav class="navbar navbar-expand-md bg-dark navbar-dark text-dark">
-        <a class="navbar-brand text-white" href="#">
-            Početna
-        </a>
-
+        <ul class="navbar-nav ml-auto">
+            <!-- Dropdown -->
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle " href="#" id="navbardrop" data-toggle="dropdown">
+                    Dobrodosao korisnice
+                </a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="#">Profil</a>
+                    <a class="dropdown-item" href="{% url 'create_kviz' %}">Kreiraj kviz</a>
+                </div>
+            </li>
+        </ul>
     </nav>
-    <div class="container">
-        {% block content_kviz %}
-        {% endblock %}
-    </div>
+    {% block content_kviz %}
+    {% endblock %}
+
     <footer class="footer mt-5 ">
         <div class="jumbotron jumbotron-fluid mt-5  ">
             <div class="container text-center">

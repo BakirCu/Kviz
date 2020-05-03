@@ -6,6 +6,16 @@ from .models import Pitanje, Odgovor, Kviz
 def home_kviz(request):
     return render(request, 'kvizer/home_kviz.html')
 
+# ovde sam dodao 'broj' da bi mogao da odredim sta da mi se prikazuje na stranici
+
+
+def kvizovi(request, broj):
+    svi_kvizovi = Kviz.objects.all().order_by('godina')
+    najnoviji_kvizovi = Kviz.objects.all().order_by('-id')[:10]
+    return render(request, 'kvizer/kvizovi.html', {'svi_kvizovi': svi_kvizovi,
+                                                   'najnoviji_kvizovi': najnoviji_kvizovi,
+                                                   'broj': broj})
+
 
 def create_kviz(request):
     if request.method == "POST":
@@ -58,20 +68,24 @@ def create_answers(request, id_kviza):
     return render(request, 'kvizer/create_answers.html', {'form': form})
 
 
-def start_kviz(request):
-    id_kviza = 44
+def start_kviz(request, id_kviza):
     pitanja = Pitanje.objects.filter(id_kviza_id=id_kviza)
     pitanja_odgovori = {}
     for pitanje in pitanja:
         odgovori = Odgovor.objects.filter(id_pitanja_id=pitanje.id)
         pitanja_odgovori[pitanje] = odgovori
     if request.method == "POST":
-        odgovor1 = request.POST.get('24')
+        tacni_odgovori = 0
+        for pitanje in pitanja_odgovori:
+            odgovor_id = request.POST.get(str(pitanje.id))
+            rezultat = Odgovor.objects.get(id=odgovor_id)
+            if rezultat.tacnost:
+                tacni_odgovori += 1
+        broj_bodova = int(tacni_odgovori/len(pitanja_odgovori)*100)
+        return redirect('end_kviz', bodovi=broj_bodova)
 
-        print(odgovor1)
-        return redirect('end_kviz')
     return render(request, 'kvizer/start_kviz.html', {'pitanja_odgovori': pitanja_odgovori})
 
 
-def end_kviz(request):
-    return render(request, 'kvizer/end_kviz.html')
+def end_kviz(request, bodovi):
+    return render(request, 'kvizer/end_kviz.html', {'bodovi': bodovi})
