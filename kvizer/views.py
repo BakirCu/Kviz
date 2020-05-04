@@ -69,6 +69,7 @@ def create_answers(request, id_kviza):
 
 
 def start_kviz(request, id_kviza):
+    kviz = Kviz.objects.get(id=id_kviza)
     pitanja = Pitanje.objects.filter(id_kviza_id=id_kviza)
     pitanja_odgovori = {}
     for pitanje in pitanja:
@@ -84,7 +85,8 @@ def start_kviz(request, id_kviza):
         broj_bodova = int(tacni_odgovori/len(pitanja_odgovori)*100)
         return redirect('end_kviz', bodovi=broj_bodova)
 
-    return render(request, 'kvizer/start_kviz.html', {'pitanja_odgovori': pitanja_odgovori})
+    return render(request, 'kvizer/start_kviz.html', {'pitanja_odgovori': pitanja_odgovori,
+                                                      'kviz': kviz})
 
 
 def end_kviz(request, bodovi):

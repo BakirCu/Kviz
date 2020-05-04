@@ -1,9 +1,21 @@
 {% extends "kvizer/base_kviz.html" %}
 {% block content_kviz %}
 {% load static %}
+<script>
+
+
+
+    var timeleft = "{{kviz.trajanje_kviza }}" * 60;
+    var downloadTimer = setInterval(function () {
+        timeleft--;
+        document.getElementById("countdowntimer").textContent = Math.floor(timeleft / 60) + ":" + (timeleft % 60 ? timeleft % 60 : '00');
+        if (timeleft <= 0) window.location.href = "{% url 'end_kviz' 1%}";;
+    }, 1000);
+</script>
 <div class="container">
-    <h4>Kviz:</h4>
-    <h4>Preostalo vreme:</h4>
+
+    <h4>Kviz : {{kviz.naziv}}</h4>
+    <h4>Preostalo vreme - <span id='countdowntimer'></span></h4>
 
     <form class="form-group" method="POST">
         {% csrf_token %}
