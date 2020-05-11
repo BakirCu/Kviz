@@ -2,9 +2,6 @@
 {% block content_kviz %}
 {% load static %}
 <script>
-
-
-
     var timeleft = "{{kviz.trajanje_kviza }}" * 60;
     var downloadTimer = setInterval(function () {
         timeleft--;
@@ -19,7 +16,6 @@
 
     <form class="form-group" method="POST">
         {% csrf_token %}
-
         {% for pitanje, odgovori in pitanja_odgovori.items %}
         <table class="table table-borderless">
             <thead>

@@ -1,0 +1,22 @@
+{% extends "kvizer/base.html" %}
+{% block content %}
+{% load static %}
+<div class="d-flex justify-content-center mt-5">
+    <form class="form-group" method="post">
+        {% csrf_token %}
+        <div class="content-section">
+            {{ form.as_p }}
+            <div class="border-top pt-3">
+                <small class="text-muted">
+                    Imate nalog? <a class="ml-2" href="#">Uloguj se</a>
+                </small>
+            </div>
+        </div>
+        <div class="col text-center">
+            <button type="submit" class="btn btn-success mt-5 mb-5">Napravi nalog</button>
+        </div>
+    </form>
+</div>
+
+
+{% endblock %}

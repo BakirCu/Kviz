@@ -1,6 +1,16 @@
 from django.db import models
 
 
+class Korisnik(models.Model):
+    TIP = (("Učenik", "Učenik"),
+           ("Profesor", "Profesor"), )
+    tip = models.CharField(choices=TIP, max_length=200)
+    ime = models.CharField(max_length=200)
+    prezime = models.CharField(max_length=200)
+    email = models.EmailField(max_length=254)
+    lozinka = models.CharField(max_length=50)
+
+
 class Kviz(models.Model):
     PREDMETI = (("Matematika", "Matematika"),
                 ("Fizika", "Fizika"),
@@ -39,7 +49,7 @@ class Kviz(models.Model):
     naziv = models.CharField(max_length=300)
     predmet = models.CharField(choices=PREDMETI, max_length=40)
     godina = models.CharField(choices=GODINE, max_length=40)
-    id_korisnika = models.PositiveIntegerField()
+    id_korisnika = models.ForeignKey(Korisnik, on_delete=models.CASCADE)
     trajanje_kviza = models.PositiveIntegerField()
 
     def __str__(self):
@@ -61,3 +71,9 @@ class Odgovor(models.Model):
 
     def __str__(self):
         return f'{self.odgovor}'
+
+
+class Rezultat(models.Model):
+    id_kviza = models.ForeignKey(Kviz, on_delete=models.CASCADE)
+    id_korisnika = models.ForeignKey(Korisnik, on_delete=models.CASCADE)
+    bodovi = models.SmallIntegerField()

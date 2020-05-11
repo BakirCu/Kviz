@@ -20,7 +20,6 @@
         <h1><i>Najnoviji kvizovi</i></h1>
     </div>
 </div>
-
 <ul class="list-group list-group-flush">
     {% for kviz in najnoviji_kvizovi %}
     <li class="list-group-item"><a href="{% url 'start_kviz' kviz.id %}">{{ kviz.godina }} - {{kviz.predmet}} -

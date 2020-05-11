@@ -16,28 +16,41 @@
 </head>
 
 <body>
-    <style>
-        .dropdown:hover>.dropdown-menu {
-            display: block;
-        }
-    </style>
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
         <!-- Brand -->
-        <a class="navbar-brand" href="#">Logo</a>
-
+        <a class="navbar-brand" href="#">Pocetna</a>
         <ul class="navbar-nav ml-auto">
             <!-- Dropdown -->
+            {% if user.is_authenticated %}
+            {% block page %}
+
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle " href="#" id="navbardrop" data-toggle="dropdown">
                     Dobrodosao korisnice
                 </a>
+
                 <div class="dropdown-menu">
                     <a class="dropdown-item" href="#">Profil</a>
                     <a class="dropdown-item" href="{% url 'create_kviz' %}">Kreiraj kviz</a>
                 </div>
             </li>
         </ul>
+
+        {% endblock %}
+        {% else %}
+        <p>Please Log in</p>
+        {% endif %}
     </nav>
+    <div class="container">
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+            {{message}}
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div>
+
     {% block content_kviz %}
     {% endblock %}
 
@@ -51,7 +64,6 @@
             </div>
         </div>
     </footer>
-
 </body>
 
 </html>
