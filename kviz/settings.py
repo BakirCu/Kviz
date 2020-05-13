@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'kvizer.apps.KvizerConfig',
 
 ]
-
+AUTH_USER_MODEL = 'kvizer.User'
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
