@@ -1,9 +1,8 @@
 from django.shortcuts import render, redirect
-from .forms import KvizForm, PitanjeForm, RegistracijaForm, LogovanjeForm
+from .forms import KvizForm, PitanjeForm, RegisterForm
 from .models import Pitanje, Odgovor, Kviz, Korisnik
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.db.models import Q
 
 
 def home_kviz(request):
@@ -109,7 +108,7 @@ def end_kviz(request, bodovi):
 
 def register(request):
     if request.method == 'POST':
-        form = RegistracijaForm(request.POST)
+        form = RegisterForm(request.POST)
         if form.is_valid():
             ime = form.cleaned_data['ime']
             prezime = form.cleaned_data['prezime']
@@ -119,31 +118,5 @@ def register(request):
             form.save()
             return redirect('home_kviz')
     else:
-        form = RegistracijaForm()
+        form = RegisterForm()
     return render(request, 'kvizer/register.html', {'form': form})
-
-
-def korisnik_ulogovan(request):
-    if request.method == "POST":
-        form = LogovanjeForm(request.POST)
-        if form.is_valid():
-            email = form.cleaned_data['email']
-            lozinka = form.cleaned_data['lozinka']
-            user = Korisnik.objects.filter(
-                Q(email=email) & Q(lozinka=lozinka))
-            if user:
-                request.session['bakir'] = user.first().pk
-                messages.info(request, f"Ulogovani ste kao {user.first().ime}")
-                return redirect('home_kviz')
-            else:
-                messages.warning(request, "Pogresan mail ili sifra.")
-        else:
-            messages.warning(request, "Pogresan mail ili sifra.")
-    else:
-        form = LogovanjeForm()
-    return render(request, 'kvizer/login.html', {'form': form})
-
-
-def korisnik_odlogovan(request):
-    del request.session['user']
-    return render(request, "kvizer/home_kviz.html")

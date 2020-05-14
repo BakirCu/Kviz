@@ -131,6 +131,11 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser):  # from step 2
 
     objects = UserManager()
+    TIP = (("Učenik", "Učenik"),
+           ("Profesor", "Profesor"), )
+    tip = models.CharField(choices=TIP, max_length=200)
+    ime = models.CharField(max_length=200)
+    prezime = models.CharField(max_length=200)
     email = models.EmailField(
         verbose_name='email address',
         max_length=255,
