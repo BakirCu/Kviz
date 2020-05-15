@@ -5,7 +5,17 @@
     <form class="form-group" method="post">
         {% csrf_token %}
         <div class="content-section">
-            {{ form.as_p }}
+            {{ form.non_field_errors }}
+            <div class="fieldWrapper">
+                {{ form.username.errors }}
+                <label for="{{ form.username.id_for_label }}">Email:</label>
+                {{ form.username }}
+            </div>
+            <div class="fieldWrapper">
+                {{ form.password.errors }}
+                <label for="{{ form.password.id_for_label }}">Lozinka:</label>
+                {{ form.password }}
+            </div>
             <div class="border-top pt-3">
                 <small class="text-muted">
                     Imate nalog? <a class="ml-2" href="#">Uloguj se</a>

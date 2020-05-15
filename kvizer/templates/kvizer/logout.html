@@ -1,0 +1,16 @@
+{% extends "kvizer/base.html" %}
+{% block content %}
+{% load static %}
+<div class="d-flex justify-content-center mt-5">
+    <small class="text-muted">
+        <h2>Uspesno ste se odjavili</h2>
+
+    </small>
+    <div class="col text-center">
+        <button type="submit" class="btn btn-success mt-5 mb-5">
+            <a class="ml-2 text-white" href="{% url 'login' %}">Uloguj se</a>
+        </button>
+    </div>
+    </form>
+</div>
+{% endblock %}

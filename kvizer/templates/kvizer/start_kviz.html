@@ -1,5 +1,5 @@
-{% extends "kvizer/base_kviz.html" %}
-{% block content_kviz %}
+{% extends "kvizer/base.html" %}
+{% block content %}
 {% load static %}
 <script>
     var timeleft = "{{kviz.trajanje_kviza }}" * 60;
@@ -10,10 +10,8 @@
     }, 1000);
 </script>
 <div class="container">
-
     <h4>Kviz : {{kviz.naziv}}</h4>
     <h4>Preostalo vreme - <span id='countdowntimer'></span></h4>
-
     <form class="form-group" method="POST">
         {% csrf_token %}
         {% for pitanje, odgovori in pitanja_odgovori.items %}

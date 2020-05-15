@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .forms import KvizForm, PitanjeForm, RegisterForm
-from .models import Pitanje, Odgovor, Kviz, Korisnik
+from .models import Pitanje, Odgovor, Kviz, User
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
@@ -19,10 +19,11 @@ def kvizovi(request, broj):
                                                    'broj': broj})
 
 
-@login_required(login_url='/')
+@login_required(login_url='/login/')
 def create_kviz(request):
     if request.method == "POST":
-        korisnik = Korisnik.objects.get(pk=1)
+        korisnik = User.objects.get(pk=4)
+        print(korisnik.id)
         form = KvizForm(request.POST)
         if form.is_valid():
             get_naziv = form.cleaned_data["naziv"]
