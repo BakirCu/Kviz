@@ -68,6 +68,9 @@ class User(AbstractBaseUser):
     def get_short_name(self):
         return self.email
 
+    def get_godina(self):
+        return self.godina
+
     def __str__(self):
         return f'{self.ime} {self.prezime}'
 
