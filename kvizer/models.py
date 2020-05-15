@@ -39,9 +39,15 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser):
 
     objects = UserManager()
+
+    GODINE = (("Prva godina", "Prva godina"),
+              ("Druga godina", "Druga godina"),
+              ("Treća godina", "Treća godina"),
+              ("Četvrta godina", "Četvrta godina"), )
     TIP = (("Učenik", "Učenik"),
            ("Profesor", "Profesor"), )
     tip = models.CharField(choices=TIP, max_length=200)
+    godina = models.CharField(choices=GODINE, max_length=40)
     ime = models.CharField(max_length=200)
     prezime = models.CharField(max_length=200)
     email = models.EmailField(

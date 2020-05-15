@@ -13,7 +13,7 @@ def home_kviz(request):
 
 @login_required(login_url='/login/')
 def kvizovi(request, broj):
-    svi_kvizovi = Kviz.objects.all().order_by('godina')
+    svi_kvizovi = Kviz.objects.filter().order_by('godina')
     najnoviji_kvizovi = Kviz.objects.all().order_by('-id')[:10]
     return render(request, 'kvizer/kvizovi.html', {'svi_kvizovi': svi_kvizovi,
                                                    'najnoviji_kvizovi': najnoviji_kvizovi,
@@ -118,7 +118,7 @@ def register(request):
                 request, f'Korisnik "{ime} {prezime}"  je uspesno napravio nalog! ')
 
             form.save()
-            return redirect('home_kviz')
+            return redirect('login')
     else:
         form = RegisterForm()
     return render(request, 'kvizer/register.html', {'form': form})
