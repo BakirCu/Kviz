@@ -11,6 +11,7 @@ def home_kviz(request):
 # ovde sam dodao 'broj' da bi mogao da odredim sta da mi se prikazuje na stranici
 
 
+@login_required(login_url='/login/')
 def kvizovi(request, broj):
     svi_kvizovi = Kviz.objects.all().order_by('godina')
     najnoviji_kvizovi = Kviz.objects.all().order_by('-id')[:10]
@@ -40,7 +41,7 @@ def create_kviz(request):
     return render(request, 'kvizer/create_kviz.html', {'form': form})
 
 
-@login_required(login_url='/')
+@login_required(login_url='/login/')
 def create_answers(request, id_kviza):
     if request.method == "POST":
         form = PitanjeForm(request.POST)
@@ -81,7 +82,7 @@ def create_answers(request, id_kviza):
     return render(request, 'kvizer/create_answers.html', {'form': form})
 
 
-@login_required(login_url='/')
+@login_required(login_url='/login/')
 def start_kviz(request, id_kviza):
     kviz = Kviz.objects.get(id=id_kviza)
     pitanja = Pitanje.objects.filter(id_kviza_id=id_kviza)
