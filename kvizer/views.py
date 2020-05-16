@@ -1,11 +1,10 @@
 from django.shortcuts import render, redirect
 from .forms import KvizForm, PitanjeForm, RegisterForm
 from .models import Pitanje, Odgovor, Kviz, User, Rezultat
-from .my_functions import get_pitanja_sa_odgovorima
+from .my_functions import get_pitanja_sa_odgovorima, broj_bodova_procenti
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
-from django.core.exceptions import ValidationError
 
 
 def home_kviz(request):
@@ -93,13 +92,7 @@ def start_kviz(request, id_kviza):
     kviz = Kviz.objects.get(id=id_kviza)
     pitanja_odgovori = get_pitanja_sa_odgovorima(id_kviza)
     if request.method == "POST":
-        tacni_odgovori = 0
-        for pitanje in pitanja_odgovori:
-            odgovor_id = request.POST.get(str(pitanje.id))
-            rezultat = Odgovor.objects.get(id=odgovor_id)
-            if rezultat.tacnost:
-                tacni_odgovori += 1
-        broj_bodova = int(tacni_odgovori/len(pitanja_odgovori)*100)
+        broj_bodova = broj_bodova_procenti(request, pitanja_odgovori)
         try:
             rezultat = Rezultat(bodovi=broj_bodova,
                                 id_korisnika_id=request.user.id,
@@ -119,8 +112,13 @@ def end_kviz(request, bodovi):
     return render(request, 'kvizer/end_kviz.html', {'bodovi': bodovi})
 
 
+@login_required(login_url='/login/')
 def profile(request):
-    return render(request, 'kvizer/profile.html')
+    if request.user.tip == "Profesor":
+        sta_sad = 'sta sad'
+    else:
+        sta_sad = 'ucenik'
+    return render(request, 'kvizer/profile.html', {'form': sta_sad})
 
 
 def register(request):
