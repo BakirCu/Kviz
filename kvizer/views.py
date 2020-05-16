@@ -28,8 +28,7 @@ def kvizovi(request, broj):
 @login_required(login_url='/login/')
 def create_kviz(request):
     if request.method == "POST":
-        korisnik = User.objects.get(pk=4)
-        print(korisnik.id)
+        korisnik = User.objects.get(pk=request.user.id)
         form = KvizForm(request.POST)
         if form.is_valid():
             get_naziv = form.cleaned_data["naziv"]
@@ -115,7 +114,8 @@ def end_kviz(request, bodovi):
 @login_required(login_url='/login/')
 def profile(request):
     if request.user.tip == "Profesor":
-        sta_sad = 'sta sad'
+        print(request.user.id)
+        sta_sad = Kviz.objects.filter(id_korisnika_id=request.user.id)
     else:
         sta_sad = 'ucenik'
     return render(request, 'kvizer/profile.html', {'form': sta_sad})
