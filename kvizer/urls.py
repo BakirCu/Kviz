@@ -10,4 +10,6 @@ urlpatterns = [path('', views.home_kviz, name='home_kviz'),
                path('start_kviz/<int:id_kviza>/',
                     views.start_kviz, name='start_kviz'),
                path('end_kviz/<str:bodovi>/', views.end_kviz, name='end_kviz'),
-               path('register', views.register, name='register')]
+               path('register', views.register, name='register'),
+               path('profile', views.profile, name='profile'),
+               ]

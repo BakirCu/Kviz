@@ -1,8 +1,11 @@
 from django.shortcuts import render, redirect
 from .forms import KvizForm, PitanjeForm, RegisterForm
-from .models import Pitanje, Odgovor, Kviz, User
+from .models import Pitanje, Odgovor, Kviz, User, Rezultat
+from .my_functions import get_pitanja_sa_odgovorima
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.db import IntegrityError
+from django.core.exceptions import ValidationError
 
 
 def home_kviz(request):
@@ -88,11 +91,7 @@ def create_answers(request, id_kviza):
 @login_required(login_url='/login/')
 def start_kviz(request, id_kviza):
     kviz = Kviz.objects.get(id=id_kviza)
-    pitanja = Pitanje.objects.filter(id_kviza_id=id_kviza)
-    pitanja_odgovori = {}
-    for pitanje in pitanja:
-        odgovori = Odgovor.objects.filter(id_pitanja_id=pitanje.id)
-        pitanja_odgovori[pitanje] = odgovori
+    pitanja_odgovori = get_pitanja_sa_odgovorima(id_kviza)
     if request.method == "POST":
         tacni_odgovori = 0
         for pitanje in pitanja_odgovori:
@@ -101,14 +100,27 @@ def start_kviz(request, id_kviza):
             if rezultat.tacnost:
                 tacni_odgovori += 1
         broj_bodova = int(tacni_odgovori/len(pitanja_odgovori)*100)
+        try:
+            rezultat = Rezultat(bodovi=broj_bodova,
+                                id_korisnika_id=request.user.id,
+                                id_kviza_id=id_kviza
+                                )
+            rezultat.save()
+        except IntegrityError:
+            messages.warning(
+                request, 'Ne mozete dva puta da radite isti kviz')
+            return redirect('home_kviz')
         return redirect('end_kviz', bodovi=broj_bodova)
-
     return render(request, 'kvizer/start_kviz.html', {'pitanja_odgovori': pitanja_odgovori,
                                                       'kviz': kviz})
 
 
 def end_kviz(request, bodovi):
     return render(request, 'kvizer/end_kviz.html', {'bodovi': bodovi})
+
+
+def profile(request):
+    return render(request, 'kvizer/profile.html')
 
 
 def register(request):

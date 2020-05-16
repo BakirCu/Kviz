@@ -54,7 +54,7 @@
             </a>
 
             <div class="dropdown-menu">
-                <a class="dropdown-item" href="#">Profil</a>
+                <a class="dropdown-item" href="{% url 'profile' %}">Profil</a>
                 {% if user.tip == 'Profesor'%}
                 <a class="dropdown-item" href="{% url 'create_kviz' %}">Kreiraj kviz</a>
                 {% endif %}

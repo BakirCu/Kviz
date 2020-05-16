@@ -159,3 +159,6 @@ class Rezultat(models.Model):
     id_kviza = models.ForeignKey(Kviz, on_delete=models.CASCADE)
     id_korisnika = models.ForeignKey(User, on_delete=models.CASCADE)
     bodovi = models.SmallIntegerField()
+
+    class Meta:
+        unique_together = ('id_kviza', 'id_korisnika',)
