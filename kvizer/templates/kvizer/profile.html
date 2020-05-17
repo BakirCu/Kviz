@@ -4,7 +4,32 @@
 <div class="row mt-5 mb-5">
     <div class="container p-3 my-3 border text-center bg-dark ">
         <h1>Kvizovi</h1>
-        <h6>{{form}}</h6>
+        {% if user.tip == 'Profesor'%}
+
+        {% for kviz in kvizovi %}
+        <li class="list-group-item"><a href="{% url 'update_kviz' kviz.id %}">{{ kviz.godina }} -
+                {{ kviz.naziv }}</a></li>
+
+        {% endfor %}
+
+        {% else %}
+        <li class="list-group-item">
+            <table class="table table-bordered">
+                <tr>
+                    <th>Predmet</th>
+                    <th>Kviz</th>
+                    <th>Bodovi</th>
+                </tr>
+                {% for kviz in kvizovi %}
+                <tr>
+                    <td>{{ kviz.id_kviza_id__predmet }}</td>
+                    <td>{{ kviz.id_kviza_id__naziv }}</td>
+                    <td>{{kviz.bodovi}}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </li>
+        {% endif %}
     </div>
 
 </div>

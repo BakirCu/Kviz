@@ -9,6 +9,13 @@ class KvizForm(forms.ModelForm):
                   'trajanje_kviza', ]
 
 
+class KvizUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Kviz
+        fields = ['id', 'naziv', 'predmet', 'godina',
+                  'trajanje_kviza', ]
+
+
 class PitanjeForm(forms.Form):
     Pitanje = forms.CharField(label='Pitanje', max_length=200)
     Tacan_odgovor = forms.CharField(label='Tacan odgovor', max_length=200)

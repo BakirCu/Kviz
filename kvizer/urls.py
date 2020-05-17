@@ -12,4 +12,6 @@ urlpatterns = [path('', views.home_kviz, name='home_kviz'),
                path('end_kviz/<str:bodovi>/', views.end_kviz, name='end_kviz'),
                path('register', views.register, name='register'),
                path('profile', views.profile, name='profile'),
+               path('update_kviz/<str:id_kviza>/',
+                    views.update_kviz, name='update_kviz'),
                ]

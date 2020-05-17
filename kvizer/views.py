@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .forms import KvizForm, PitanjeForm, RegisterForm
+from .forms import KvizForm, PitanjeForm, RegisterForm, KvizUpdateForm
 from .models import Pitanje, Odgovor, Kviz, User, Rezultat
 from .my_functions import get_pitanja_sa_odgovorima, broj_bodova_procenti
 from django.contrib import messages
@@ -114,11 +114,27 @@ def end_kviz(request, bodovi):
 @login_required(login_url='/login/')
 def profile(request):
     if request.user.tip == "Profesor":
-        print(request.user.id)
-        sta_sad = Kviz.objects.filter(id_korisnika_id=request.user.id)
+        kvizovi = Kviz.objects.filter(id_korisnika_id=request.user.id)
     else:
-        sta_sad = 'ucenik'
-    return render(request, 'kvizer/profile.html', {'form': sta_sad})
+        kvizovi = Rezultat.objects.values('bodovi',
+                                          'id_kviza_id__naziv',
+                                          'id_kviza_id__predmet'
+                                          ).filter(id_korisnika_id=request.user.id)
+
+    return render(request, 'kvizer/profile.html', {'kvizovi': kvizovi})
+
+
+def update_kviz(request, id_kviza):
+    kviz = Kviz.objects.get(id=id_kviza)
+    if request.method == "POST":
+        form = KvizUpdateForm(request.POST, instance=kviz)
+        if form.is_valid():
+            form.save()
+            messages.success(request, f'Promene su uspesno zavrsene')
+            return redirect('profile')
+    else:
+        form = KvizUpdateForm(instance=kviz)
+    return render(request, 'kvizer/update_kviz.html', {'form': form})
 
 
 def register(request):
