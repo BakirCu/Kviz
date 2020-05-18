@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from .forms import KvizForm, PitanjeForm, RegisterForm, KvizUpdateForm
 from .models import Pitanje, Odgovor, Kviz, User, Rezultat
-from .my_functions import get_pitanja_sa_odgovorima, broj_bodova_procenti
+from .my_functions import get_pitanja_sa_odgovorima, broj_bodova_procenti, Odgovori
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
@@ -126,6 +126,34 @@ def profile(request):
 
 def update_kviz(request, id_kviza):
     kviz = Kviz.objects.get(id=id_kviza)
+    pitanja_odgovori = get_pitanja_sa_odgovorima(id_kviza)
+    pitanje_form = []
+    for pitanje, odg in pitanja_odgovori.items():
+        odgovori = Odgovori.get_odgovori(odg)
+        if request.method == "POST":
+            pitanje_odg_form = PitanjeForm(request.POST, initial={
+                "Pitanje": pitanje,
+                "Tacan_odgovor": odgovori.tacan_odgovor,
+                "Netacan_odgovor1": odgovori.netacan_odgovor1,
+                "Netacan_odgovor2": odgovori.netacan_odgovor2,
+                "Netacan_odgovor3": odgovori.netacan_odgovor3,
+            })
+            if pitanje_odg_form.is_valid():
+                get_pitanje = pitanje_odg_form.cleaned_data["Pitanje"]
+                get_tacan_odgovor = pitanje_odg_form.cleaned_data["Tacan_odgovor"]
+                get_netacan_odgovor1 = pitanje_odg_form.cleaned_data["Netacan_odgovor1"]
+                get_netacan_odgovor2 = pitanje_odg_form.cleaned_data["Netacan_odgovor2"]
+                get_netacan_odgovor3 = pitanje_odg_form.cleaned_data["Netacan_odgovor3"]
+
+        else:
+            pitanje_odg_form = PitanjeForm(initial={
+                "Pitanje": pitanje,
+                "Tacan_odgovor": odgovori.tacan_odgovor,
+                "Netacan_odgovor1": odgovori.netacan_odgovor1,
+                "Netacan_odgovor2": odgovori.netacan_odgovor2,
+                "Netacan_odgovor3": odgovori.netacan_odgovor3,
+            })
+        pitanje_form.append(pitanje_odg_form)
     if request.method == "POST":
         form = KvizUpdateForm(request.POST, instance=kviz)
         if form.is_valid():
@@ -134,7 +162,7 @@ def update_kviz(request, id_kviza):
             return redirect('profile')
     else:
         form = KvizUpdateForm(instance=kviz)
-    return render(request, 'kvizer/update_kviz.html', {'form': form})
+    return render(request, 'kvizer/update_kviz.html', {'kviz_form': form, 'pitanje_form': pitanje_form})
 
 
 def register(request):

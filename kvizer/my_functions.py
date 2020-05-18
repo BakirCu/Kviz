@@ -19,3 +19,22 @@ def broj_bodova_procenti(request, pitanja_odgovori):
         if rezultat.tacnost:
             tacni_odgovori += 1
     return int(tacni_odgovori/len(pitanja_odgovori)*100)
+
+
+class Odgovori():
+    def __init__(self, odgovori):
+
+        self.tacan_odgovor = odgovori[0]
+        self.netacan_odgovor1 = odgovori[1]
+        if len(odgovori) == 3:
+            self.netacan_odgovor2 = odgovori[2]
+            self.netacan_odgovor3 = ''
+        elif len(odgovori) == 4:
+            self.netacan_odgovor2 = odgovori[2]
+            self.netacan_odgovor3 = odgovori[3]
+        else:
+            self.netacan_odgovor2 = ''
+            self.netacan_odgovor3 = ''
+
+    def get_odgovori(odgovori):
+        return Odgovori(odgovori)

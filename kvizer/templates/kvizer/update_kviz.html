@@ -5,12 +5,22 @@
     <form class="form-group" method="post">
         {% csrf_token %}
         <div class="content-section">
-            {{ form.as_p }}
+            {{ kviz_form.as_p }}
+
         </div>
+        <div class="row mt-5">
+            {% for pitanje_odgovr in pitanje_form %}
+            <div class="col">
+                <div class="content-section">
+                    {{ pitanje_odgovr.as_p }}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
         <div class="col text-center">
             <button type="submit" class="btn btn-success mt-5 mb-5">Sacuvaj kviz </button>
         </div>
     </form>
 </div>
-
 {% endblock %}
