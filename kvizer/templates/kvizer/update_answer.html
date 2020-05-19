@@ -1,0 +1,19 @@
+{% extends "kvizer/base.html" %}
+{% block content %}
+{% load static %}
+
+<div class="d-flex justify-content-center mt-5">
+    <form class="form-group" method="POST">
+        {% csrf_token %}
+        <div class="content-section">
+            {{ form.as_p }}
+        </div>
+        <div class="col text-center">
+            <div class="btn-group btn-group-lg mt-5">
+                <button type="submit" class="btn btn-success mt-5 mb-5">Sacuvaj pitanje</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

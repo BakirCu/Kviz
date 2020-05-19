@@ -23,7 +23,6 @@ def broj_bodova_procenti(request, pitanja_odgovori):
 
 class Odgovori():
     def __init__(self, odgovori):
-
         self.tacan_odgovor = odgovori[0]
         self.netacan_odgovor1 = odgovori[1]
         if len(odgovori) == 3:
