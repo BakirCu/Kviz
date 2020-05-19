@@ -16,10 +16,15 @@ def home_kviz(request):
 @login_required(login_url='/login/')
 def kvizovi(request, broj):
     razred = User.get_godina(request.user)
-    svi_kvizovi = Kviz.objects.filter(
-        godina=razred).order_by('godina')
-    najnoviji_kvizovi = Kviz.objects.filter(
-        godina=razred).order_by('-id')[:10]
+    tip = User.get_tip(request.user)
+    if tip == "Profesor":
+        svi_kvizovi = Kviz.objects.all().order_by('godina')
+        najnoviji_kvizovi = Kviz.objects.all().order_by('-id')[:10]
+    else:
+        svi_kvizovi = Kviz.objects.filter(
+            godina=razred).order_by('godina')
+        najnoviji_kvizovi = Kviz.objects.filter(
+            godina=razred).order_by('-id')[:10]
     return render(request, 'kvizer/kvizovi.html', {'svi_kvizovi': svi_kvizovi,
                                                    'najnoviji_kvizovi': najnoviji_kvizovi,
                                                    'broj': broj})

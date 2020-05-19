@@ -71,6 +71,9 @@ class User(AbstractBaseUser):
     def get_godina(self):
         return self.godina
 
+    def get_tip(self):
+        return self.tip
+
     def __str__(self):
         return f'{self.ime} {self.prezime}'
 
