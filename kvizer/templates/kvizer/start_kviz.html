@@ -3,7 +3,9 @@
 {% load static %}
 <script>
     // Set the date we're counting down to
-    var countDownDate = new Date("{{pocetak_kviza.poetak_kviza|date:'m d Y G:H:i'}}").getTime();
+    var pocetak_kviza = new Date("{{pocetak_kviza.poetak_kviza|date:'m d Y G:H:i'}}").getTime();
+    var trajanje_kviza = parseInt("{{kviz.trajanje_kviza }}") * 60000
+    var countDownDate = pocetak_kviza + trajanje_kviza
 
     // Update the count down every 1 second
     var x = setInterval(function () {
@@ -16,8 +18,8 @@
 
         // Time calculations for days, hours, minutes and seconds
 
-
-        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)) + parseInt("{{kviz.trajanje_kviza }}");
+        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
         // Output the result in an element with id="demo"
