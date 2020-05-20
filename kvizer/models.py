@@ -165,3 +165,12 @@ class Rezultat(models.Model):
 
     class Meta:
         unique_together = ('id_kviza', 'id_korisnika',)
+
+
+class PocetakKviza(models.Model):
+    poetak_kviza = models.DateTimeField(auto_now=True)
+    id_kviza = models.ForeignKey(Kviz, on_delete=models.CASCADE)
+    id_korisnika = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('id_kviza', 'id_korisnika',)

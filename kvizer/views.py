@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .forms import KvizForm, PitanjeForm, RegisterForm, KvizUpdateForm
-from .models import Pitanje, Odgovor, Kviz, User, Rezultat
+from .models import Pitanje, Odgovor, Kviz, User, Rezultat, PocetakKviza
 from .my_functions import get_pitanja_sa_odgovorima, broj_bodova_procenti, Odgovori
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -94,6 +94,13 @@ def create_answers(request, id_kviza):
 @login_required(login_url='/login/')
 def start_kviz(request, id_kviza):
     kviz = Kviz.objects.get(id=id_kviza)
+    try:
+        pocetak_kviza = PocetakKviza(id_korisnika_id=request.user.id,
+                                     id_kviza_id=id_kviza)
+        pocetak_kviza.save()
+    except IntegrityError:
+        messages.warning(
+            request, 'Ako ste jednom zapoceli kviz ne mozete poceti ponovo')
     pitanja_odgovori = get_pitanja_sa_odgovorima(id_kviza)
     if request.method == "POST":
         broj_bodova = broj_bodova_procenti(request, pitanja_odgovori)
@@ -109,7 +116,8 @@ def start_kviz(request, id_kviza):
             return redirect('home_kviz')
         return redirect('end_kviz', bodovi=broj_bodova)
     return render(request, 'kvizer/start_kviz.html', {'pitanja_odgovori': pitanja_odgovori,
-                                                      'kviz': kviz})
+                                                      'kviz': kviz,
+                                                      'pocetak_kviza': pocetak_kviza})
 
 
 def end_kviz(request, bodovi):
