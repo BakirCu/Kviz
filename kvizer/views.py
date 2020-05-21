@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect
 from .forms import KvizForm, PitanjeForm, RegisterForm, KvizUpdateForm
-from .models import Pitanje, Odgovor, Kviz, User, Rezultat, PocetakKviza
+from .models import Pitanje, Odgovor, Kviz, User, Rezultat
 from .my_functions import get_pitanja_sa_odgovorima, broj_bodova_procenti, Odgovori
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
+from django.db.models import Q
 
 
 def home_kviz(request):
@@ -94,27 +95,33 @@ def create_answers(request, id_kviza):
 @login_required(login_url='/login/')
 def start_kviz(request, id_kviza):
     kviz = Kviz.objects.get(id=id_kviza)
-    try:
-        pocetak_kviza = PocetakKviza(id_korisnika_id=request.user.id,
-                                     id_kviza_id=id_kviza)
-        pocetak_kviza.save()
-    except IntegrityError:
-        messages.warning(
-            request, 'Ako ste jednom zapoceli kviz ne mozete poceti ponovo')
     pitanja_odgovori = get_pitanja_sa_odgovorima(id_kviza)
     if request.method == "POST":
         broj_bodova = broj_bodova_procenti(request, pitanja_odgovori)
         try:
-            rezultat = Rezultat(bodovi=broj_bodova,
+            pocetni_rezultat = Rezultat.objects.filter(
+                Q(id_korisnika_id=request.user.id) & Q(id_kviza_id=id_kviza))
+            rezultat = Rezultat(id=pocetni_rezultat[0].id, bodovi=broj_bodova,
                                 id_korisnika_id=request.user.id,
                                 id_kviza_id=id_kviza
                                 )
             rezultat.save()
         except IntegrityError:
-            messages.warning(
-                request, 'Ne mozete dva puta da radite isti kviz')
+            messages.warning(request,
+                             'Ne mozete dva puta da radite isti kviz')
             return redirect('home_kviz')
         return redirect('end_kviz', bodovi=broj_bodova)
+    else:
+        try:
+            pocetak_kviza = Rezultat(bodovi=0,
+                                     id_korisnika_id=request.user.id,
+                                     id_kviza_id=id_kviza
+                                     )
+            pocetak_kviza.save()
+        except IntegrityError:
+            messages.warning(request,
+                             'Ako ste jednom zapoceli kviz ne mozete poceti ponovo')
+            return redirect('start_kviz')
     return render(request, 'kvizer/start_kviz.html', {'pitanja_odgovori': pitanja_odgovori,
                                                       'kviz': kviz,
                                                       'pocetak_kviza': pocetak_kviza})

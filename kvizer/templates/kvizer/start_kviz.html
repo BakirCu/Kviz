@@ -2,38 +2,24 @@
 {% block content %}
 {% load static %}
 <script>
-    // Set the date we're counting down to
-    var pocetak_kviza = new Date("{{pocetak_kviza.poetak_kviza|date:'m d Y G:H:i'}}").getTime();
+    var pocetak_kviza = new Date("{{pocetak_kviza.poetak_kviza|date:'m d Y H:i:s'}}").getTime();
     var trajanje_kviza = parseInt("{{kviz.trajanje_kviza }}") * 60000
     var countDownDate = pocetak_kviza + trajanje_kviza
-
-    // Update the count down every 1 second
     var x = setInterval(function () {
-
-        // Get today's date and time
         var now = new Date().getTime();
-
-        // Find the distance between now and the count down date
         var distance = countDownDate - now;
-
-        // Time calculations for days, hours, minutes and seconds
-
         var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-        // Output the result in an element with id="demo"
         document.getElementById("demo").innerHTML =
             + minutes + "m " + seconds + "s ";
-
-        // If the count down is over, write some text 
         if (distance < 0)
-            window.location.href = "{% url 'end_kviz' 1%}";
+            window.location.href = "{% url 'end_kviz' 0%}";
     }, 1000);
 
 </script>
 <div class="container">
-    <h1>pocetak{{pocetak_kviza.poetak_kviza|date:" m d Y G:H:i"}}</h1>
+    <h1>pocetak{{pocetak_kviza.poetak_kviza|date:" m d Y G:i:s"}}</h1>
     <h4>Kviz : {{kviz.naziv}}</h4>
     <h4>Preostalo vreme - <span id='demo'></span></h4>
     <form class="form-group" method="POST">
