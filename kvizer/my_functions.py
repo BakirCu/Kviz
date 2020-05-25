@@ -14,11 +14,15 @@ def get_pitanja_sa_odgovorima(id_kviza):
 def broj_bodova_procenti(request, pitanja_odgovori):
     tacni_odgovori = 0
     for pitanje in pitanja_odgovori:
-        odgovor_id = request.POST.get(str(pitanje.id))
-        rezultat = Odgovor.objects.get(id=odgovor_id)
-        if rezultat.tacnost:
-            tacni_odgovori += 1
-    return int(tacni_odgovori/len(pitanja_odgovori)*100)
+        if str(pitanje.id) in request.POST:
+            odgovor_id = request.POST[str(pitanje.id)]
+            rezultat = Odgovor.objects.get(id=odgovor_id)
+            if rezultat.tacnost:
+                tacni_odgovori += 1
+    if tacni_odgovori:
+        return int(tacni_odgovori/len(pitanja_odgovori)*100)
+    else:
+        return 0
 
 
 class Odgovori():

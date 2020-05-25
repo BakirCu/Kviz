@@ -163,6 +163,7 @@ class Rezultat(models.Model):
     id_korisnika = models.ForeignKey(User, on_delete=models.CASCADE)
     bodovi = models.SmallIntegerField()
     poetak_kviza = models.DateTimeField(auto_now=True)
+    radio_kviz = models.BooleanField(default=False)
 
     class Meta:
         unique_together = ('id_kviza', 'id_korisnika',)

@@ -3,8 +3,8 @@
 {% load static %}
 <script>
     var pocetak_kviza = new Date("{{pocetak_kviza.poetak_kviza|date:'m d Y H:i:s'}}").getTime();
-    var trajanje_kviza = parseInt("{{kviz.trajanje_kviza }}") * 60000
-    var countDownDate = pocetak_kviza + trajanje_kviza
+    var trajanje_kviza = parseInt("{{kviz.trajanje_kviza }}") * 60000;
+    var countDownDate = pocetak_kviza + trajanje_kviza;
     var x = setInterval(function () {
         var now = new Date().getTime();
         var distance = countDownDate - now;
@@ -19,7 +19,6 @@
 
 </script>
 <div class="container">
-    <h1>pocetak{{pocetak_kviza.poetak_kviza|date:" m d Y G:i:s"}}</h1>
     <h4>Kviz : {{kviz.naziv}}</h4>
     <h4>Preostalo vreme - <span id='demo'></span></h4>
     <form class="form-group" method="POST">

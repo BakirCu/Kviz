@@ -1,0 +1,23 @@
+{% extends "kvizer/base.html" %}
+{% block content %}
+{% load static %}
+<div class="row mt-5 mb-5">
+    <div class="container p-3 my-3 border text-center bg-dark ">
+        <h1>Rezultati</h1>
+        <li class="list-group-item">
+            <table class="table table-bordered">
+                <tr>
+                    <th>Ucenik</th>
+                    <th>Bodovi</th>
+                </tr>
+                {% for rezultat in rezultati %}
+                <tr>
+                    <td>{{ rezultat.id_korisnika_id__ime }} {{ rezultat.id_korisnika_id__prezime }}</td>
+                    <td>{{ rezultat.bodovi }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </li>
+    </div>
+</div>
+{% endblock %}
