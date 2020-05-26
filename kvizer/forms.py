@@ -27,6 +27,10 @@ class PitanjeForm(forms.Form):
 
 
 class RegisterForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(RegisterForm, self).__init__(*args, **kwargs)
+        self.fields['godina'].required = False
+
     password1 = forms.CharField(label='Lozinka', widget=forms.PasswordInput)
     password2 = forms.CharField(
         label='Potvrdi lozinku', widget=forms.PasswordInput)

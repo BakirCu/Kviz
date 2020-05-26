@@ -109,13 +109,11 @@ def start_kviz(request, id_kviza):
 
         if pocetni_rezultat:
             pocetak_kviza = pocetni_rezultat[0]
-            if pocetni_rezultat[0].radio_kviz:
+            if pocetak_kviza.radio_kviz:
                 messages.warning(request,
                                  'Ne mozete dva puta da radite isti kviz')
-                return redirect('end_kviz', bodovi=pocetni_rezultat[0].bodovi)
-            else:
-                messages.warning(request,
-                                 'Kada istekne vreme, kviz ne mozete poceti ponovo')
+                return redirect('end_kviz', bodovi=pocetak_kviza.bodovi)
+
         else:
             pocetak_kviza = Rezultat(bodovi=0,
                                      id_korisnika_id=request.user.id,

@@ -1,4 +1,6 @@
 from django.db import models
+from django.core.exceptions import ValidationError
+from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import (
     BaseUserManager, AbstractBaseUser
 )
@@ -47,7 +49,8 @@ class User(AbstractBaseUser):
     TIP = (("Učenik", "Učenik"),
            ("Profesor", "Profesor"), )
     tip = models.CharField(choices=TIP, max_length=200)
-    godina = models.CharField(choices=GODINE, max_length=40)
+    godina = models.CharField(choices=GODINE, max_length=40, blank=True,
+                              null=True)
     ime = models.CharField(max_length=200)
     prezime = models.CharField(max_length=200)
     email = models.EmailField(
@@ -55,12 +58,23 @@ class User(AbstractBaseUser):
         max_length=255,
         unique=True,
     )
-    active = models.BooleanField(default=True)
+    active = models.BooleanField(default=False)
     staff = models.BooleanField(default=False)
     admin = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
+# problem sa ovim je sto ne mogu nikako da napravim da mi posle ucenik bude neaktivan?
+
+    def save(self, *args, **kwargs):
+        if self.tip == 'Učenik':
+            self.active = True
+        return super(User, self).save(*args, **kwargs)
+
+    def clean(self):
+        if self.tip == 'Učenik' and not self.godina:
+            raise ValidationError(
+                _('Ucenik mora da izabere koja je godina'))
 
     def get_full_name(self):
         return self.email
