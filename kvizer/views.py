@@ -96,10 +96,10 @@ def start_kviz(request, id_kviza):
     kviz = Kviz.objects.get(id=id_kviza)
     pitanja_odgovori = get_pitanja_sa_odgovorima(id_kviza)
     pocetni_rezultat = Rezultat.objects.filter(
-        Q(id_korisnika_id=request.user.id) & Q(id_kviza_id=id_kviza))
+        Q(id_korisnika_id=request.user.id) & Q(id_kviza_id=id_kviza))[0]
     if request.method == "POST":
         broj_bodova = broj_bodova_procenti(request, pitanja_odgovori)
-        rezultat = Rezultat(id=pocetni_rezultat[0].id, bodovi=broj_bodova,
+        rezultat = Rezultat(id=pocetni_rezultat.id, bodovi=broj_bodova,
                             id_korisnika_id=request.user.id,
                             id_kviza_id=id_kviza,
                             radio_kviz=1)
@@ -108,11 +108,11 @@ def start_kviz(request, id_kviza):
     else:
 
         if pocetni_rezultat:
-            pocetak_kviza = pocetni_rezultat[0]
-            if pocetni_rezultat[0].radio_kviz:
+            pocetak_kviza = pocetni_rezultat
+            if pocetni_rezultat.radio_kviz:
                 messages.warning(request,
                                  'Ne mozete dva puta da radite isti kviz')
-                return redirect('home_kviz')
+                return redirect('end_kviz', bodovi=pocetni_rezultat.bodovi)
             else:
                 messages.warning(request,
                                  'Kada istekne vreme, kviz ne mozete poceti ponovo')

@@ -1,21 +1,25 @@
 {% extends "kvizer/base.html" %}
 {% block content %}
 {% load static %}
-<div class="row mt-5 mb-5">
-    <div class="container p-3 my-3 border text-center bg-dark ">
-        <h1>Rezultati</h1>
-        {% for kviz in kvizovi %}
-        <li class="list-group-item"><a href="{% url 'rezultati' kviz.id %}">{{ kviz.godina }} -
-                {{ kviz.naziv }}</a></li>
-        {% endfor %}
+<div class="row  mt-5 mb-5">
+    <div class="col-sm-6">
+        <div class="container p-3 my-3 border text-center bg-dark ">
+            <h1>Rezultati</h1>
+            {% for kviz in kvizovi %}
+            <li class="list-group-item"><a href="{% url 'rezultati' kviz.id %}">{{ kviz.godina }} -
+                    {{ kviz.naziv }}</a></li>
+            {% endfor %}
+        </div>
     </div>
-    <div class="container p-3 my-3 border text-center bg-dark ">
-        <h1>Kvizovi</h1>
-        {% if user.tip == 'Profesor'%}
-        {% for kviz in kvizovi %}
-        <li class="list-group-item"><a href="{% url 'update_kviz' kviz.id %}">{{ kviz.godina }} -
-                {{ kviz.naziv }}</a></li>
-        {% endfor %}
+    <div class="col-sm-6">
+        <div class="container p-3 my-3 border text-center bg-dark ">
+            <h1>Kvizovi</h1>
+            {% if user.tip == 'Profesor'%}
+            {% for kviz in kvizovi %}
+            <li class="list-group-item"><a href="{% url 'update_kviz' kviz.id %}">{{ kviz.godina }} -
+                    {{ kviz.naziv }}</a></li>
+            {% endfor %}
+        </div>
     </div>
     {% else %}
     <li class="list-group-item">
