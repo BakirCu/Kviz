@@ -6,16 +6,17 @@
         {% csrf_token %}
         <div class="content-section">
             {{ kviz_form.as_p }}
-
         </div>
         <div class="col text-center">
             <button type="submit" class="btn btn-success mt-5 mb-5">Sacuvaj kviz </button>
         </div>
     </form>
-
 </div>
 {% for pitanje in pitanja %}
-<li class="list-group-item"><a href="{% url 'update_answer' id_kviza pitanje.id  %}">{{pitanje.pitanje}}</a>
-</li>
+<div class="container">
+    <li class="list-group-item text-center"><a href="{% url 'update_answer' id_kviza pitanje.id  %}">
+            {{pitanje.pitanje}}</a>
+    </li>
+</div>
 {% endfor %}
 {% endblock %}

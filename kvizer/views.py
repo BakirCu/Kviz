@@ -18,13 +18,27 @@ def kvizovi(request, broj):
     razred = User.get_godina(request.user)
     tip = User.get_tip(request.user)
     if tip == "Profesor":
-        svi_kvizovi = Kviz.objects.all().order_by('godina')
-        najnoviji_kvizovi = Kviz.objects.all().order_by('-id')[:10]
+        svi_kvizovi = Kviz.objects.values('id', 'naziv',
+                                          'predmet',
+                                          'godina',
+                                          'id_korisnika_id__ime',
+                                          'id_korisnika_id__prezime',).order_by('godina')
+        najnoviji_kvizovi = Kviz.objects.values('id', 'naziv',
+                                                'predmet',
+                                                'godina',
+                                                'id_korisnika_id__ime',
+                                                'id_korisnika_id__prezime',).order_by('-id')[:10]
     else:
-        svi_kvizovi = Kviz.objects.filter(
-            godina=razred).order_by('godina')
-        najnoviji_kvizovi = Kviz.objects.filter(
-            godina=razred).order_by('-id')[:10]
+        svi_kvizovi = Kviz.objects.values('id', 'naziv',
+                                          'predmet',
+                                          'godina',
+                                          'id_korisnika_id__ime',
+                                          'id_korisnika_id__prezime',).filter(godina=razred).order_by('godina')
+        najnoviji_kvizovi = Kviz.objects.values('id', 'naziv',
+                                                'predmet',
+                                                'godina',
+                                                'id_korisnika_id__ime',
+                                                'id_korisnika_id__prezime',).filter(godina=razred).order_by('-id')[:10]
     return render(request, 'kvizer/kvizovi.html', {'svi_kvizovi': svi_kvizovi,
                                                    'najnoviji_kvizovi': najnoviji_kvizovi,
                                                    'broj': broj})
@@ -126,6 +140,7 @@ def start_kviz(request, id_kviza):
                                                       'pocetak_kviza': pocetak_kviza})
 
 
+@login_required(login_url='/login/')
 def rezultati(request, id_kviza):
     rezultati = Rezultat.objects.values('bodovi',
                                         'id_korisnika_id__ime',
@@ -135,6 +150,7 @@ def rezultati(request, id_kviza):
     return render(request, 'kvizer/rezultati.html', {'rezultati': rezultati})
 
 
+@login_required(login_url='/login/')
 def end_kviz(request, bodovi):
     return render(request, 'kvizer/end_kviz.html', {'bodovi': bodovi})
 
@@ -151,6 +167,7 @@ def profile(request):
     return render(request, 'kvizer/profile.html', {'kvizovi': kvizovi})
 
 
+@login_required(login_url='/login/')
 def update_kviz(request, id_kviza):
     kviz = Kviz.objects.get(id=id_kviza)
     pitanja = Pitanje.objects.filter(id_kviza_id=id_kviza)
@@ -169,6 +186,7 @@ def update_kviz(request, id_kviza):
                                                        'id_kviza': id_kviza})
 
 
+@login_required(login_url='/login/')
 def update_answer(request, id_kviza, id_pitanja):
     pitanje = Pitanje.objects.get(id=id_pitanja)
     odgovor = Odgovor.objects.filter(id_pitanja_id=id_pitanja)

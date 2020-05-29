@@ -21,38 +21,17 @@
 
     <!-- Navigation bar-->
     <nav class="navbar navbar-expand-md bg-dark navbar-dark text-dark">
-        <a class="navbar-brand text-white" href="#">
+        <a class="navbar-brand text-white" href="{% url 'home_kviz' %}">
             Početna
         </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="collapsibleNavbar">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="#">I-razred</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">II-razred</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">III-razred</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">IV-razred</a>
-                </li>
-            </ul>
-
-        </div>
-
         <!-- Dropdown -->
         {% if user.is_authenticated %}
-        <ul class="navbar-nav ml-auto"></ul>
+        <ul class="navbar-nav ml-auto "></ul>
         <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle text-white" href="#" id="navbardrop" data-toggle="dropdown">
+            <a class="nav-link dropdown-toggle text-white" href="#" id="navbardrop" data-toggle="dropdown"
+                data-delay="1000" data-close-others="false">
                 Korisnik: {{user.ime}} {{user.prezime}}
             </a>
-
             <div class="dropdown-menu">
                 <a class="dropdown-item" href="{% url 'profile' %}">Profil</a>
                 {% if user.tip == 'Profesor'%}
@@ -83,12 +62,13 @@
         {% endfor %}
         {% endif %}
     </div>
+
     {% block content %}
     {% endblock %}
 
     <footer class="footer mb-0">
-        <div class="jumbotron jumbotron-fluid mb-0  ">
-            <div class="container text-center ">
+        <div class="jumbotron jumbotron-fluid mb-0">
+            <div class="container text-center">
                 <span class="text-muted">
                     <img style="width:50px;" src="{% static 'kvizer/images/logo.jpg'%}" class="rounded" alt="Logo"
                         width="100">

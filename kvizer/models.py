@@ -64,7 +64,6 @@ class User(AbstractBaseUser):
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
-# problem sa ovim je sto ne mogu nikako da napravim da mi posle ucenik bude neaktivan?
 
     def save(self, *args, **kwargs):
         if self.tip == 'Učenik' and not self.id:

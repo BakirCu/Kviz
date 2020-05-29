@@ -9,8 +9,9 @@
 </div>
 <ul class="list-group list-group-flush">
     {% for kviz in svi_kvizovi %}
-    <li class="list-group-item"><a href="{% url 'start_kviz' kviz.id %}">{{ kviz.godina }} - {{kviz.predmet}} -
-            {{ kviz.naziv }}</a></li>
+    <li class="list-group-item"><a href="{% url 'start_kviz' kviz.id %}">{{ kviz.godina }} -
+            {{kviz.predmet}} - {{ kviz.id_korisnika_id__ime}} {{kviz.id_korisnika_id__prezime}} - {{ kviz.naziv }}</a>
+    </li>
 
     {% endfor %}
 </ul>
@@ -22,8 +23,9 @@
 </div>
 <ul class="list-group list-group-flush">
     {% for kviz in najnoviji_kvizovi %}
-    <li class="list-group-item"><a href="{% url 'start_kviz' kviz.id %}">{{ kviz.godina }} - {{kviz.predmet}} -
-            {{ kviz.naziv }}</a></li>
+    <li class="list-group-item"><a href="{% url 'start_kviz' kviz.id %}">{{ kviz.godina }} -
+            {{kviz.predmet}} - {{ kviz.id_korisnika_id__ime}} {{kviz.id_korisnika_id__prezime}} - {{ kviz.naziv }}</a>
+    </li>
 
     {% endfor %}
 </ul>
