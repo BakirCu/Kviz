@@ -7,7 +7,8 @@ def get_pitanja_sa_odgovorima(id_kviza):
     pitanja_odgovori = {}
     for pitanje in pitanja:
         odgovori = Odgovor.objects.filter(id_pitanja_id=pitanje.id)
-        pitanja_odgovori[pitanje] = odgovori
+        random_odgovori = set(odgovori)
+        pitanja_odgovori[pitanje] = random_odgovori
     return pitanja_odgovori
 
 

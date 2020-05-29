@@ -67,10 +67,8 @@ class User(AbstractBaseUser):
 # problem sa ovim je sto ne mogu nikako da napravim da mi posle ucenik bude neaktivan?
 
     def save(self, *args, **kwargs):
-        if self.tip == 'Učenik' and not self.active:
+        if self.tip == 'Učenik' and not self.id:
             self.active = True
-        elif self.tip == 'Učenik' and self.active:
-            self.active = False
         return super(User, self).save(*args, **kwargs)
 
     def clean(self):
