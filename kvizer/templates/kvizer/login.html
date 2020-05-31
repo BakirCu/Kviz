@@ -16,6 +16,12 @@
                 <label for="{{ form.password.id_for_label }}">Lozinka:</label>
                 {{ form.password }}
             </div>
+
+            <div class="border-top pt-4 ">
+                <small class="text-muted">
+                    Nemate nalog? <a class="ml-2" href="{% url 'register' %}">Registruj se</a>
+                </small>
+            </div>
         </div>
         <div class="col text-center">
             <button type="submit" class="btn btn-success mt-5 mb-5">Prijavi se</button>
