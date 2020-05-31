@@ -1,14 +1,16 @@
 
-from .models import Pitanje, Odgovor
+from .models import Pitanje, Odgovor, Rezultat
+from django.db.models import Q
+from random import shuffle
 
 
 def get_pitanja_sa_odgovorima(id_kviza):
     pitanja = Pitanje.objects.filter(id_kviza_id=id_kviza)
     pitanja_odgovori = {}
     for pitanje in pitanja:
-        odgovori = Odgovor.objects.filter(id_pitanja_id=pitanje.id)
-        random_odgovori = set(odgovori)
-        pitanja_odgovori[pitanje] = random_odgovori
+        odgovori = list(Odgovor.objects.filter(id_pitanja_id=pitanje.id))
+        shuffle(odgovori)
+        pitanja_odgovori[pitanje] = odgovori
     return pitanja_odgovori
 
 
@@ -24,6 +26,17 @@ def broj_bodova_procenti(request, pitanja_odgovori):
         return int(tacni_odgovori/len(pitanja_odgovori)*100)
     else:
         return 0
+
+
+def add_result(request, kvizovi):
+    for kviz in kvizovi:
+        try:
+            Rezultat.objects.get(Q(id_kviza_id=kviz['id'])
+                                 & Q(id_korisnika_id=request.user.id))
+            kviz['rezultat'] = True
+        except Rezultat.DoesNotExist:
+            kviz['rezultat'] = False
+    return kvizovi
 
 
 class Odgovori():

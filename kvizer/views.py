@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from .forms import KvizForm, PitanjeForm, RegisterForm, KvizUpdateForm
 from .models import Pitanje, Odgovor, Kviz, User, Rezultat
-from .my_functions import get_pitanja_sa_odgovorima, broj_bodova_procenti, Odgovori
+from .my_functions import get_pitanja_sa_odgovorima, broj_bodova_procenti, add_result, Odgovori
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
@@ -10,38 +10,26 @@ from django.db.models import Q
 def home_kviz(request):
     return render(request, 'kvizer/home_kviz.html')
 
-# ovde sam dodao 'broj' da bi mogao da odredim sta da mi se prikazuje na stranici
-
 
 @login_required(login_url='/login/')
-def kvizovi(request, broj):
+def kvizovi(request):
     razred = User.get_godina(request.user)
     tip = User.get_tip(request.user)
     if tip == "Profesor":
-        svi_kvizovi = Kviz.objects.values('id', 'naziv',
-                                          'predmet',
-                                          'godina',
-                                          'id_korisnika_id__ime',
-                                          'id_korisnika_id__prezime',).order_by('godina')
-        najnoviji_kvizovi = Kviz.objects.values('id', 'naziv',
-                                                'predmet',
-                                                'godina',
-                                                'id_korisnika_id__ime',
-                                                'id_korisnika_id__prezime',).order_by('-id')[:10]
+        kvizovi = Kviz.objects.values('id', 'naziv',
+                                      'predmet',
+                                      'godina',
+                                      'id_korisnika_id__ime',
+                                      'id_korisnika_id__prezime',).order_by('godina')
+
     else:
-        svi_kvizovi = Kviz.objects.values('id', 'naziv',
-                                          'predmet',
-                                          'godina',
-                                          'id_korisnika_id__ime',
-                                          'id_korisnika_id__prezime',).filter(godina=razred).order_by('godina')
-        najnoviji_kvizovi = Kviz.objects.values('id', 'naziv',
-                                                'predmet',
-                                                'godina',
-                                                'id_korisnika_id__ime',
-                                                'id_korisnika_id__prezime',).filter(godina=razred).order_by('-id')[:10]
-    return render(request, 'kvizer/kvizovi.html', {'svi_kvizovi': svi_kvizovi,
-                                                   'najnoviji_kvizovi': najnoviji_kvizovi,
-                                                   'broj': broj})
+        kvizovi = Kviz.objects.values('id', 'naziv',
+                                      'predmet',
+                                      'godina',
+                                      'id_korisnika_id__ime',
+                                      'id_korisnika_id__prezime',).filter(godina=razred).order_by('godina')
+    kvizovi_sa_rezultatom = add_result(request, kvizovi)
+    return render(request, 'kvizer/kvizovi.html', {'svi_kvizovi': kvizovi_sa_rezultatom})
 
 
 @login_required(login_url='/login/')

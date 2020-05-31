@@ -14,7 +14,7 @@
     </div>
     <div class="col-sm-6">
         <div class="container p-3 my-3 border text-center bg-dark ">
-            <h1>Kvizovi</h1>
+            <h1>Koriguj kvizove</h1>
 
             {% for kviz in kvizovi %}
             <li class="list-group-item"><a href="{% url 'update_kviz' kviz.id %}">{{ kviz.godina }} -
@@ -24,7 +24,7 @@
     </div>
     {% else %}
     <div class="container p-3 my-3 border text-center bg-dark ">
-        <h1>Kvizovi</h1>
+        <h1>Rezultati</h1>
         <li class="list-group-item">
             <table class="table table-bordered">
                 <tr>

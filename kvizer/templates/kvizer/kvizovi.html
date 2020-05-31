@@ -2,36 +2,19 @@
 {% block content %}
 {% load static %}
 <div class="jumbotron jumbotron-fluid big-banner ">
-    {% if broj %}
     <div class="container text-center">
-        <h1><i>Svi kvizovi</i></h1>
+        <h1><i>Kvizovi</i></h1>
     </div>
 </div>
 <ul class="list-group list-group-flush">
     {% for kviz in svi_kvizovi %}
     <li class="list-group-item"><a href="{% url 'start_kviz' kviz.id %}">{{ kviz.godina }} -
-            {{kviz.predmet}} - {{ kviz.id_korisnika_id__ime}} {{kviz.id_korisnika_id__prezime}} - {{ kviz.naziv }}</a>
+            {{kviz.predmet}} - {{ kviz.id_korisnika_id__ime}} {{kviz.id_korisnika_id__prezime}} - {{ kviz.naziv }}
+            {% if kviz.rezultat %}
+            <spain class="font-weight-bold ml-5">Odradjen</spain>
+            {% endif %}
+        </a>
     </li>
-
     {% endfor %}
 </ul>
-{% else %}
-<div class="jumbotron jumbotron-fluid big-banner ">
-    <div class="container text-center">
-        <h1><i>Najnoviji kvizovi</i></h1>
-    </div>
-</div>
-<ul class="list-group list-group-flush">
-    {% for kviz in najnoviji_kvizovi %}
-    <li class="list-group-item"><a href="{% url 'start_kviz' kviz.id %}">{{ kviz.godina }} -
-            {{kviz.predmet}} - {{ kviz.id_korisnika_id__ime}} {{kviz.id_korisnika_id__prezime}} - {{ kviz.naziv }}</a>
-    </li>
-
-    {% endfor %}
-</ul>
-{% endif %}
-
-
-
-
 {% endblock %}

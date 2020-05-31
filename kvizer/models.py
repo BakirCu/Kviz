@@ -8,7 +8,6 @@ from django.contrib.auth.models import (
 
 class UserManager(BaseUserManager):
     def create_user(self, email, password=None):
-
         if not email:
             raise ValueError('Korisnik mora da ima email adresu')
 
@@ -39,9 +38,7 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser):
-
     objects = UserManager()
-
     GODINE = (("Prva godina", "Prva godina"),
               ("Druga godina", "Druga godina"),
               ("Treća godina", "Treća godina"),
@@ -151,7 +148,7 @@ class Kviz(models.Model):
     trajanje_kviza = models.PositiveIntegerField()
 
     def __str__(self):
-        return f'{self.naziv}'
+        return f'{self.predmet}-{self.naziv}'
 
 
 class Pitanje(models.Model):
