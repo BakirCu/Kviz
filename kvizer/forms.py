@@ -1,5 +1,6 @@
 from django import forms
 from .models import Kviz, User
+from django.contrib.auth.forms import AuthenticationForm
 
 
 class KvizForm(forms.ModelForm):
@@ -59,3 +60,9 @@ class RegisterForm(forms.ModelForm):
         if commit:
             user.save()
         return user
+
+
+class CustomAuthForm(AuthenticationForm):
+    def __init__(self, *args, **kwargs):
+        self.error_messages['invalid_login'] = 'Unesite tacan email i lozinku'
+        super().__init__(*args, **kwargs)
