@@ -1,6 +1,7 @@
 from django import forms
 from .models import Kviz, User
 from django.contrib.auth.forms import AuthenticationForm
+from django.forms import Select, NumberInput
 
 
 class KvizForm(forms.ModelForm):
@@ -8,9 +9,13 @@ class KvizForm(forms.ModelForm):
         model = Kviz
         fields = ['id', 'naziv', 'predmet', 'godina',
                   'trajanje_kviza', ]
+        widgets = {
+            'trajanje_kviza': NumberInput(attrs={'placeholder': 'broj minuta'}),
+        }
 
 
 class KvizUpdateForm(forms.ModelForm):
+
     class Meta:
         model = Kviz
         fields = ['id', 'naziv', 'predmet', 'godina',
@@ -39,6 +44,9 @@ class RegisterForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ('email', 'ime', 'prezime', 'tip', 'godina')
+        widgets = {
+            'tip': Select(attrs={"onChange": 'myFunction()'})
+        }
 
     def clean_email(self):
         email = self.cleaned_data.get('email')
@@ -64,5 +72,5 @@ class RegisterForm(forms.ModelForm):
 
 class CustomAuthForm(AuthenticationForm):
     def __init__(self, *args, **kwargs):
-        self.error_messages['invalid_login'] = 'Unesite tacan email i lozinku'
+        self.error_messages['invalid_login'] = 'Uneli ste pogrešan email ili lozinku'
         super().__init__(*args, **kwargs)

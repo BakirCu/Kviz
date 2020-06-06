@@ -1,6 +1,14 @@
 {% extends "kvizer/base.html" %}
 {% block content %}
 {% load static %}
+<script>
+    function myFunction() {
+        var tip = document.getElementById("id_tip").value;
+        if (tip == 'Profesor') { document.getElementById("id_godina").disabled = true; }
+        else { document.getElementById("id_godina").disabled = false; }
+
+    }
+</script>
 <div class="d-flex justify-content-center mt-5">
     <form class="form-group" method="post">
         {% csrf_token %}
